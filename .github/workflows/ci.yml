@@ -1,0 +1,39 @@
+name: CI
+
+# Runs on every push and pull request to main.
+# Proves the app builds and the production Docker image works
+# before anything reaches the live site.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Build production Docker image
+        run: docker build --target production -t jt-portfolio:ci .
+
+  # When you are ready for Azure, add a deploy job here.
+  # Azure Static Web Apps generates one for you when you connect the repo,
+  # or use azure/webapps-deploy for App Service containers.

@@ -1,0 +1,12 @@
+services:
+  portfolio:
+    build:
+      context: .
+      target: dev          # use the dev stage of the Dockerfile
+    ports:
+      - "5173:5173"        # localhost:5173 in your browser
+    volumes:
+      - .:/app             # your code is mounted in, so edits show instantly
+      - /app/node_modules  # but node_modules stays inside the container
+    environment:
+      - CHOKIDAR_USEPOLLING=true   # makes hot reload work on Windows
