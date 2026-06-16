@@ -266,7 +266,7 @@ export default function App() {
             <a href="https://github.com/kknowerr" target="_blank" rel="noopener noreferrer">
               GitHub &#8599;
             </a>
-            <a href="#" data-placeholder onClick={(e) => e.preventDefault()}>
+            <a href="https://www.linkedin.com/in/jacob-trevino-0081a3233/" target="_blank" rel="noopener noreferrer">
               LinkedIn &#8599;
             </a>
             <a href="mailto:jacobatrevino@gmail.com">Email</a>
