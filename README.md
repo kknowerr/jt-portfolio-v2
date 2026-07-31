@@ -1,16 +1,49 @@
-# React + Vite
+# jt-portfolio-v2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio of **Jacob A. Trevino** — Technician. Developer. Automator.
 
-Currently, two official plugins are available:
+Dark, terminal-inspired single-page site built with React and Vite, containerized with Docker, and verified by GitHub Actions CI on every push.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> Previous version: [jt-portfolio](https://github.com/l0sttt/jt-portfolio) — React 18 + Tailwind, hosted on GitHub Pages. This version: React 19 + Vite 8, containerized with Docker, CI on GitHub Actions, Azure deploy planned.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19** + **Vite 8** (requires Node 20.19+ — see `.nvmrc`)
+- **Docker** — dev, build, and nginx production stages
+- **GitHub Actions** — lint, build, and production-image check on every push/PR
+- **ESLint** — flat config with React hooks rules
 
-## Expanding the ESLint configuration
+## Quick start
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+With Node installed (uses `.nvmrc`):
+
+```bash
+nvm use
+npm install
+npm run dev
+```
+
+Or with Docker (no local Node needed):
+
+```bash
+docker compose up
+```
+
+Either way, open http://localhost:5173. Edits under `src/` hot-reload.
+
+## Production build
+
+```bash
+docker build --target production -t portfolio-prod .
+docker run -p 8080:80 portfolio-prod
+```
+
+Open http://localhost:8080 — this is exactly what production will serve.
+
+## Workflow
+
+Branch-based development with PRs into `main`; CI must pass before merge. See [GUIDE.md](GUIDE.md) for the full Docker + git workflow and the Azure deployment plan.
+
+## Versions
+
+- **v1.0** — baseline: ported v1 content into the new React/Vite/Docker structure.
