@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Globe from './Globe'
 import './index.css'
 
 const DNS_HOST_IP = '1.1.1.1'
@@ -165,6 +166,9 @@ export default function App() {
       setBar(60, 'DIALING HOST')
       await sleep(300)
 
+      addLog('> tracing route on global net map ...')
+      await sleep(300)
+
       await runHandshake()
       setHostConnected(true)
       addLog('> handshake ........... ok', 'ok')
@@ -217,6 +221,11 @@ export default function App() {
               <line ref={linkDrawRef} className="link-draw" x1="40" y1="60" x2="560" y2="60" />
               <circle ref={packetRef} className="packet" cx="40" cy="60" r="4" />
             </svg>
+
+            <div className="globe-wrap" aria-hidden="true">
+              <Globe active={!preloaderDone} linked={hostConnected} />
+              <span className="pl-mono globe-cap">NET MAP // 33.4N 112.0W</span>
+            </div>
 
             <div className={`node node-host${hostConnected ? ' connected' : ''}`}>
               <div className="node-ring" />
