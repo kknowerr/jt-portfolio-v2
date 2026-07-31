@@ -13,7 +13,9 @@ async function resolveClientIp() {
     clearTimeout(t)
     const { ip } = await res.json()
     if (ip) return { ip, sim: false }
-  } catch {}
+  } catch {
+    /* offline or blocked — fall through to simulated IP */
+  }
   const r = () => Math.floor(Math.random() * 254) + 1
   return { ip: `10.${r()}.${r()}.${r()}`, sim: true }
 }
