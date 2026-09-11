@@ -23,6 +23,15 @@ async function resolveClientIp() {
 
 const PROJECTS = [
   {
+    title: 'EagleSat Project Board',
+    desc: 'Self-hosted OpenProject workspace for the EagleSat CubeSat team: org-level tickets, sub-team boards, and invited contributors. Open to view. Create an account to contribute.',
+    tags: 'openproject · docker · cloudflare tunnel · self-hosted',
+    links: [
+      { label: 'View board', href: 'https://projects.trevinnovations.com/projects/eaglesat' },
+      { label: 'Request an account', href: 'https://projects.trevinnovations.com/account/register' },
+    ],
+  },
+  {
     title: 'Warhammer 40K Games Tracker',
     desc: 'React app for logging games, tracking army performance, and recording results across sessions. In progress.',
     tags: 'react · in-progress',
@@ -296,6 +305,15 @@ export default function App() {
                   {p.placeholder && <span className="badge pl-mono">IN PROGRESS</span>}
                 </h3>
                 <p>{p.desc}</p>
+                {p.links && (
+                  <nav className="links pl-mono">
+                    {p.links.map((l, j) => (
+                      <a key={j} href={l.href} target="_blank" rel="noopener noreferrer">
+                        {l.label} &#8599;
+                      </a>
+                    ))}
+                  </nav>
+                )}
                 <span className="pl-mono pl-dim tags">{p.tags}</span>
               </li>
             ))}
