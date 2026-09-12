@@ -102,7 +102,11 @@ function Clock() {
    applies the saved value before first paint so there is no flash. */
 function useTheme() {
   const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem('theme') === 'light' ? 'light' : 'dark' } catch { return 'dark' }
+    try {
+      const saved = localStorage.getItem('theme')
+      if (saved === 'light' || saved === 'dark') return saved
+      return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    } catch { return 'dark' }
   })
   useEffect(() => {
     const root = document.documentElement
@@ -313,7 +317,7 @@ export default function App() {
         </div>
 
         <header className="hero">
-          <img className="monogram" src="/tiv-mark.svg" alt="TIV" width="44" height="44" />
+          <img className="monogram" src={theme === 'light' ? '/tiv-logo-light.png' : '/tiv-logo-dark.png'} alt="TIV" width="72" height="57" />
           <h1>Jacob A. Trevino</h1>
           <p className="tagline pl-mono">Technician. Developer. Automator.</p>
           <p className="meta pl-mono pl-dim">
@@ -332,7 +336,7 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <section className="block reveal-on-scroll" style={{ '--reveal-i': 0 }}>
+        <section className="block block-work reveal-on-scroll" style={{ '--reveal-i': 0 }}>
           <h2 className="pl-mono">// SELECTED WORK</h2>
           <ul className="work reveal-list">
             {PROJECTS.map((p, i) => (
