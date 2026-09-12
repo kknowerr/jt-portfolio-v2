@@ -403,10 +403,12 @@ html, body {
   transition-delay: calc(var(--reveal-i, 0) * 60ms);
 }
 .work.reveal-list.in-view > li { opacity: 1; transform: none; }
+.work.reveal-list.in-view > li.placeholder { opacity: 0.55; }
 @media (prefers-reduced-motion: reduce) {
   .reveal-on-scroll, .work.reveal-list > li, .site {
     opacity: 1 !important; transform: none !important; transition: none !important;
   }
+  .work.reveal-list > li.placeholder { opacity: .55 !important; }
 }
 
 @media (max-width: 540px) {

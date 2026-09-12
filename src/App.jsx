@@ -127,7 +127,7 @@ function useScrollReveal(active) {
       entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target) }
       })
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 })
+    }, { rootMargin: '0px', threshold: 0.12 })
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [active])
@@ -404,7 +404,7 @@ export default function App() {
             className="theme-toggle"
             onClick={toggleTheme}
             aria-pressed={theme === 'light'}
-            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            aria-label="Light mode"
           >
             <span className="sw" aria-hidden="true" />
             {theme === 'light' ? 'LIGHT' : 'DARK'}
