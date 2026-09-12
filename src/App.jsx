@@ -98,6 +98,41 @@ function Clock() {
   return <span className="pl-mono pl-dim pl-right">{time}</span>
 }
 
+/* Theme: 'dark' (default) | 'light'. Persisted in localStorage; index.html
+   applies the saved value before first paint so there is no flash. */
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('theme') === 'light' ? 'light' : 'dark' } catch { return 'dark' }
+  })
+  useEffect(() => {
+    const root = document.documentElement
+    if (theme === 'light') root.setAttribute('data-theme', 'light')
+    else root.removeAttribute('data-theme')
+    try { localStorage.setItem('theme', theme) } catch { /* private mode */ }
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#f4efe6' : '#100e0b')
+  }, [theme])
+  return [theme, () => setTheme((t) => (t === 'light' ? 'dark' : 'light'))]
+}
+
+/* Scroll reveal: once the site is revealed, observe every .reveal-on-scroll
+   and .reveal-list element and add .in-view the first time it enters the
+   viewport. Elements already on screen animate immediately, staggered. */
+function useScrollReveal(active) {
+  useEffect(() => {
+    if (!active) return undefined
+    const els = document.querySelectorAll('.reveal-on-scroll, .reveal-list')
+    if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in-view')); return undefined }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target) }
+      })
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 })
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [active])
+}
+
 export default function App() {
   const [preloaderDone, setPreloaderDone] = useState(false)
   const [siteRevealed,  setSiteRevealed]  = useState(false)
@@ -107,6 +142,8 @@ export default function App() {
   const [logLines,      setLogLines]      = useState([])
   const [progress,      setProgress]      = useState({ pct: 0, status: 'INITIALIZING' })
   const [uptime,        setUptime]        = useState('00:00')
+  const [theme,         toggleTheme]      = useTheme()
+  useScrollReveal(siteRevealed)
 
   const linkDrawRef  = useRef(null)
   const packetRef    = useRef(null)
@@ -295,11 +332,11 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <section className="block">
+        <section className="block reveal-on-scroll" style={{ '--reveal-i': 0 }}>
           <h2 className="pl-mono">// SELECTED WORK</h2>
-          <ul className="work">
+          <ul className="work reveal-list">
             {PROJECTS.map((p, i) => (
-              <li key={i} className={p.placeholder ? 'placeholder' : undefined}>
+              <li key={i} className={p.placeholder ? 'placeholder' : undefined} style={{ '--reveal-i': i }}>
                 <h3>
                   {p.title}
                   {p.placeholder && <span className="badge pl-mono">IN PROGRESS</span>}
@@ -322,7 +359,7 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <section className="block">
+        <section className="block reveal-on-scroll" style={{ '--reveal-i': 1 }}>
           <h2 className="pl-mono">// CURRENTLY</h2>
           <ul className="involve pl-mono">
             {CURRENTLY.map((item, i) => (
@@ -333,7 +370,7 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <section className="block">
+        <section className="block reveal-on-scroll" style={{ '--reveal-i': 2 }}>
           <h2 className="pl-mono">// SKILLS</h2>
           <ul className="skills pl-mono">
             {SKILLS.map((s, i) => (
@@ -347,7 +384,7 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <section className="block">
+        <section className="block reveal-on-scroll" style={{ '--reveal-i': 3 }}>
           <h2 className="pl-mono">// CERTIFICATIONS</h2>
           <ul className="involve pl-mono">
             {CERTS.map((c, i) => (
@@ -358,10 +395,20 @@ export default function App() {
 
         <hr className="hairline" />
 
-        <footer className="foot pl-mono pl-dim">
+        <footer className="foot pl-mono pl-dim reveal-on-scroll" style={{ '--reveal-i': 4 }}>
           <span>Jacob A. Trevino</span>
           <span>(480) 938-0202</span>
           <span>jacobatrevino@gmail.com</span>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-pressed={theme === 'light'}
+            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          >
+            <span className="sw" aria-hidden="true" />
+            {theme === 'light' ? 'LIGHT' : 'DARK'}
+          </button>
         </footer>
       </main>
     </>

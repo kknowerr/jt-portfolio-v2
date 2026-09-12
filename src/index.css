@@ -9,11 +9,33 @@
   --bg-panel:  #16130f;
   --bone:      #ece3d4;
   --bone-dim:  #8d8576;
+  --body-dim:  #c3bbac;
+  --line:      #221d16;
+  --line-soft: #2a241c;
   --copper:    #c77b43;
   --copper-hi: #e3995c;
   --sage:      #93a583;
+  --statusbar-bg: rgba(16,14,11,0.92);
   --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
   --sans: "Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+/* Light mode: same palette logic on a warm paper base. Toggled from the
+   footer, persisted in localStorage('theme'), applied pre-paint in index.html. */
+:root[data-theme="light"] {
+  --bg:        #f4efe6;
+  --bg-panel:  #fbf8f2;
+  --bone:      #1d1811;
+  --bone-dim:  #6d6557;
+  --body-dim:  #3f3830;
+  --line:      #e2d9ca;
+  --line-soft: #d6ccbb;
+  --copper:    #a85f2c;
+  --copper-hi: #8a4b1f;
+  --sage:      #5f7350;
+  --statusbar-bg: rgba(244,239,230,0.92);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -25,6 +47,7 @@ html, body {
   color: var(--bone);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 .pl-mono  { font-family: var(--mono); letter-spacing: 0.04em; }
@@ -47,7 +70,7 @@ html, body {
 
 .pl-frame {
   width: min(680px, 90vw);
-  border: 1px solid #2a241c;
+  border: 1px solid var(--line-soft);
   background: var(--bg-panel);
   padding: 22px 26px 26px;
   box-shadow: 0 0 0 1px #0b0907, 0 30px 80px -40px #000;
@@ -146,7 +169,7 @@ html, body {
 }
 
 .link { flex: 1; height: 120px; min-width: 80px; }
-.link-base { stroke: #2a241c; stroke-width: 1; }
+.link-base { stroke: var(--line-soft); stroke-width: 1; }
 .link-draw {
   stroke: var(--copper);
   stroke-width: 1.5;
@@ -167,14 +190,14 @@ html, body {
   color: var(--bone-dim);
   min-height: 92px;
   margin-top: 14px;
-  border-top: 1px solid #221d16;
+  border-top: 1px solid var(--line);
   padding-top: 12px;
   white-space: pre-wrap;
 }
 .pl-log .ok { color: var(--sage); }
 .pl-log .hl { color: var(--copper); }
 
-.pl-bar { height: 2px; background: #221d16; margin-top: 14px; overflow: hidden; }
+.pl-bar { height: 2px; background: var(--line); margin-top: 14px; overflow: hidden; }
 .pl-bar-fill {
   height: 100%;
   width: 0%;
@@ -202,9 +225,9 @@ html, body {
   gap: 10px;
   font-size: 10.5px;
   padding: 9px 2px;
-  background: rgba(16,14,11,0.92);
+  background: var(--statusbar-bg);
   backdrop-filter: blur(4px);
-  border-bottom: 1px solid #221d16;
+  border-bottom: 1px solid var(--line);
   z-index: 10;
 }
 .statusbar .arrow { opacity: 0.6; }
@@ -281,7 +304,7 @@ html, body {
   align-items: center;
   gap: 10px;
 }
-.work p { margin: 0 0 8px; color: #c3bbac; font-size: 14px; line-height: 1.55; max-width: 60ch; }
+.work p { margin: 0 0 8px; color: var(--body-dim); font-size: 14px; line-height: 1.55; max-width: 60ch; }
 .tags   { font-size: 11px; }
 .work li.placeholder { opacity: 0.55; }
 .badge {
@@ -301,7 +324,7 @@ html, body {
   display: grid;
   gap: 10px;
   font-size: 13px;
-  color: #c3bbac;
+  color: var(--body-dim);
 }
 .involve .pl-accent { margin-right: 8px; }
 
@@ -315,15 +338,75 @@ html, body {
 }
 .skills li { display: flex; gap: 14px; }
 .skill-label { color: var(--bone-dim); min-width: 110px; flex-shrink: 0; }
-.skill-value { color: #c3bbac; }
+.skill-value { color: var(--body-dim); }
 
 /* footer */
 .foot {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 18px;
   font-size: 11px;
   margin-top: 50px;
+}
+.theme-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--bone-dim);
+  background: none;
+  border: 1px solid var(--line-soft);
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.theme-toggle:hover { color: var(--copper-hi); border-color: var(--copper); }
+.theme-toggle:focus-visible { outline: 1px solid var(--copper); outline-offset: 2px; }
+.theme-toggle .sw {
+  width: 26px; height: 12px;
+  border: 1px solid var(--sage);
+  border-radius: 999px;
+  position: relative;
+  flex-shrink: 0;
+}
+.theme-toggle .sw::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--copper);
+  transition: transform 0.25s ease;
+}
+:root[data-theme="light"] .theme-toggle .sw::after { transform: translateX(14px); }
+
+/* ===================== SCROLL REVEAL =====================
+   Sections start slightly low and transparent; an IntersectionObserver in
+   App.jsx adds .in-view once, staggered by --reveal-i. Respects
+   prefers-reduced-motion. */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+.reveal-on-scroll.in-view { opacity: 1; transform: none; }
+.work.reveal-list > li {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+.work.reveal-list.in-view > li { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll, .work.reveal-list > li, .site {
+    opacity: 1 !important; transform: none !important; transition: none !important;
+  }
 }
 
 @media (max-width: 540px) {

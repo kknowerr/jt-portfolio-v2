@@ -5,6 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#100e0b" />
+    <script>
+      // Apply saved theme before first paint to avoid a flash. Default: dark.
+      try { var t = localStorage.getItem('theme'); if (t === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+    </script>
     <meta property="og:title" content="Jacob A. Trevino // Technician. Developer. Automator." />
     <meta property="og:description" content="Cyber Intelligence and Security at Embry-Riddle. Projects, work, and contact." />
     <meta property="og:image" content="https://trevinnovations.com/og.png" />
