@@ -1,5 +1,5 @@
 <svg fill="#ece3d4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500" height="500" viewBox="0 0 500 500">
-<rect width="500" height="500" rx="90" fill="#100e0b"/><defs>
+<defs>
 <clipPath id="clip_1">
 <path transform="matrix(1,0,0,-1,0,500)" d="M0 500H500V0H0Z"/>
 </clipPath>

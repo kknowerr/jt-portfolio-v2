@@ -276,7 +276,7 @@ export default function App() {
         </div>
 
         <header className="hero">
-          <div className="monogram">JT</div>
+          <img className="monogram" src="/tiv-mark.svg" alt="TIV" width="44" height="44" />
           <h1>Jacob A. Trevino</h1>
           <p className="tagline pl-mono">Technician. Developer. Automator.</p>
           <p className="meta pl-mono pl-dim">
